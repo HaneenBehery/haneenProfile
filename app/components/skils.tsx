@@ -1,5 +1,5 @@
 "use client";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import gsap from 'gsap';
 import { useGSAP } from '@gsap/react';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -12,6 +12,7 @@ if (typeof window !== "undefined") {
 const SkillsSection = () => {
   const containerRef = useRef(null);
     const { t, i18n } = useTranslation();
+    const [activeSkill, setActiveSkill] = useState<number | null>(null);
   // Updated skills to include their "sub-skills"
   const skillsData = [
     { name: 'Frontend', tools: ['Angular', 'React', 'Tailwind'] },
@@ -83,7 +84,11 @@ const SkillsSection = () => {
         {skillsData.map((skill, index) => (
           <div 
             key={index} 
-            className="group skill-ticket bg-white/95 backdrop-blur-sm text-blue-900 p-8 rounded-xl shadow-[0_20px_50px_rgba(0,0,0,0.2)] border-l-[12px] border-dashed border-blue-400 min-w-[300px] max-w-[350] "
+            className="group skill-ticket bg-white/95 backdrop-blur-sm text-blue-900 p-8 rounded-xl shadow-[0_20px_50px_rgba(0,0,0,0.2)] border-l-[12px] border-dashed border-blue-400 min-w-[300px] max-w-[350] " onClick={() =>
+
+  setActiveSkill(activeSkill === index ? null : index)
+
+}
           >
             {/* Main Ticket Info */}
             <div className="flex justify-between items-start mb-6 transition-opacity duration-300 group-hover:opacity-20">
@@ -106,7 +111,9 @@ const SkillsSection = () => {
             </div>
 
             {/* HOVER REVEAL: Sub-skills / Tools */}
-            <div className="absolute inset-0 flex flex-col items-center justify-center bg-yellow-200/90 text-pink-300 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-xl px-4 text-center">
+            <div className={`absolute inset-0 flex flex-col items-center justify-center bg-yellow-200/90 text-pink-300 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-xl px-4 text-center md:group-hover:opacity-100
+${activeSkill === index ? "opacity-100" : ""}
+`}>
               <p className="text-[10px] uppercase tracking-widest mb-2 text-pink-400">Manifest</p>
               <div className="flex flex-wrap justify-center gap-2">
                 {skill.tools.map((tool, i) => (
